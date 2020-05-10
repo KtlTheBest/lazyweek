@@ -53,27 +53,30 @@ def get_report_count(project_folder):
 def get_date_range():
     today = datetime.today()
     first_day = today + datetime.timedelta(days=-5)
-    today = today.strftime('%d.%m.%G')
-    first_day = first_day.strftime('%d.%m.%G')
+    today = today.strftime(config.DATE_FORMAT)
+    first_day = first_day.strftime(config.DATE_FORMAT)
 
     return first_day + ' - ' + today
 
-def load_constants(project_folder, report_no=None, date_range=None):
+def load_constants(args):
     global REPORT_NO
     global DATE_RANGE
 
-    if report_no is None:
-        report_no = get_report_count(project_folder) + 1
+    project_folder = args.project
 
-    if date_range is None:
-        date_range = get_date_range()
+    if args.number == -1:
+        report_no = get_report_count(project_folder) + 1
+    else:
+        report_no = args.number
+
+    date_range = get_date_range()
 
     REPORT_NO = report_no
     DATE_RANGE = date_range
 
 def load_header(header_file=""):
     if header_file == "":
-        header_file = config.HEADER_FILE
+        header_file = config.HEADER
 
     with open(header_file) as f:
         header = f.read().rstrip().split(' ')
@@ -128,7 +131,7 @@ def get_phrase(count):
 
     return phrase, length
 
-def generate_text(limit):
+def generate_report(limit):
     text = ""
     count = 0
 
@@ -141,8 +144,31 @@ def generate_text(limit):
 
     return text
 
+def write_report(project, report):
+    if not os.path.exists(project):
+        os.mkdir(project)
+
+    report_file = os.path.join(project, str(get_report_count(project) + 1) + '.report')
+    with open(report_file, "w") as f:
+        f.write(report)
+
+def init():
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('-l', '--limit', type=int, default=config.WORD_LIMIT)
+    parser.add_argument('-p', '--project', type=str, default=config.PROJECT_NAME)
+    parser.add_argument('-n', '--number', type=int, default=-1)
+
+    return parser
+
 def main():
-    pass
+    parser = init()
+    args = parser.parse_args()
+
+    load_constants(args)
+
+    report = generate_report(args.limit)
+    write_report(args.project, report)
 
 if __name__ == "__main__":
     main()

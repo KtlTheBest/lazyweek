@@ -1,0 +1,6 @@
+KEYWORDS = "keywords.key"
+CONFIG_FOLDER = "."
+OPENERS = "openers.f"
+PHRASES = "phrases.f"
+HEADER = "header.f"
+DATE_FORMAT = "%d.%m.%G"
