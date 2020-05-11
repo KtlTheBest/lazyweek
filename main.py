@@ -18,7 +18,7 @@ def load_items(folder, filename):
     items_file = os.path.join(folder, filename)
     if os.path.exists(items_file):
         with open(items) as f:
-            for word in f.read().rstrip().split(','):
+            for word in f.read().rstrip().split(';'):
                 items.append(word)
     else:
         print("ERROR: Can't find {} to read from!".format(items_file))
