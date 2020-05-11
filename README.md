@@ -19,6 +19,8 @@ To create a keywords file, need to put a bunch of keywords one after another and
 
 > Important note: the openers, phrases and keywords files must be non-empty (e.g. contain at least one phrase or keyword). That's just how it is.
 
+You can specify which files to use, by specifying with command-line arguments or by changing `config.py` file. I believe that everything is pretty simple there.
+
 ## Okay, what's next?
 So, I've written the alpha version of it, but there are still things that I need to finish, namely:
  - Test whether the command line arguments work properly
